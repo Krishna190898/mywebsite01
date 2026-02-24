@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form</title>
+    <link rel="stylesheet" href="Registration.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <form id="myForm">
+            <h1>Register Form</h1>
+            <div>
+                <label for="fname">First Name :</label> <br>
+                <input type="text" id="fname" placeholder="First Name">
+                <div class="error" id="fnameErr"></div>
+            </div>
+
+            <div>
+                <label for="lname">Last Name :</label> <br>
+                <input type="text" id="lname" placeholder="Last Name">
+                <div class="error" id="lnameErr"></div>
+            </div>
+
+
+            <div>
+                <label for="username">Username :</label> <br>
+                <input type="text" id="username" placeholder="Username">
+                <div class="error" id="userErr"></div>
+            </div>
+
+
+            <div>
+                <label for="email">Email :</label> <br>
+                <input type="email" id="email" placeholder="Email ID">
+                <div class="error" id="emailErr"></div>
+            </div>
+
+
+            <div>
+                <label for="phone">Mobile No :</label> <br>
+                <input type="text" id="phone" placeholder="Mobile No" maxlength="10">
+                <div class="error" id="phoneErr"></div>
+            </div>
+
+
+            <div>
+                <label for="password">Password :</label><br>
+                <input type="password" id="password" placeholder=" Password">
+                <div class="error" id="passErr"></div>
+            </div>
+
+            <div>
+                <label for="cpassword">Confirm Password :</label> <br>
+                <input type="password" id="cpassword" placeholder="Confirm Password">
+                <div class="error" id="cpassErr"></div>
+            </div>
+            <br>
+
+            <button type="submit">Submit</button>
+
+
+        </form>
+
+    </div>
+
+    <script src="form.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+* {
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+}
+
+.container {
+    /* height: 100vh; */
+    /* width: 100%; */
+    /* background-color: whitesmoke; */
+}
+
+.navbar {
+    height: 20vh;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#logo {
+    font-size: larger;
+    font-weight: bolder;
+    color: gray;
+    /* text-shadow: 2px 3px 2px; */
+}
+
+#logo:hover {
+    color: red;
+    font-variant: small-caps;
+}
+
+#text a {
+    padding: 20px;
+    text-decoration: none;
+    font-size: larger;
+    font-weight: bold;
+    color: gray;
+}
+
+#text a:hover {
+    color: red;
+    font-variant: small-caps;
+}
+
+#btn button {
+    height: 40px;
+    width: 100px;
+    color: blue;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#btn button:hover {
+    background-color: white;
+    color: black;
+}
+
+h2 {
+    text-align: center;
+    font-size: larger;
+    font-weight: bolder;
+    color: gray;
+}
+
+
+ /* Products style */
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.card img {
+    height: 120px;
+}
+
+
+
+
+
+
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 350px;
+    height: 100%;
+    background: white;
+    box-shadow: -3px 0 10px rgba(0,0,0,0.2);
+    padding: 20px;
+    transition: 0.4s;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.cart-sidebar.active {
+    right: 0;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
