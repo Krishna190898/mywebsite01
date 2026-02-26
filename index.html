@@ -4,17 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JS</title>
-    <link rel="stylesheet" href="index.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Mr KKR Store</title>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
 
-    <div class="">
+    <div class="container-fluid p-0">
 
+        <!-- NAVBAR -->
         <div class="navbar">
+
             <div id="logo">Mr KKR</div>
 
             <div id="text">
@@ -22,32 +24,44 @@
                 <a href="#">What People Say</a>
                 <a href="#">How Q Works</a>
                 <a href="#">Insights</a>
-                <a href="#">FAQ's</a>
+                <a href="#">FAQ</a>
+            </div>
+
+            <!-- 🔍 SEARCH + SORT -->
+            <div class="search-sort">
+
+                <input type="text" id="searchInput" placeholder="Search product...">
+
+                <select id="sortSelect" onchange="sortProducts()">
+                    <option value="">Sort By</option>
+                    <option value="low">Price: Low to High</option>
+                    <option value="high">Price: High to Low</option>
+                    <option value="az">Name: A to Z</option>
+                    <option value="za">Name: Z to A</option>
+                </select>
+
             </div>
 
             <div id="btn">
                 <button id="registerBtn" onclick="goToRegister()">Register</button>
                 <span id="userArea" style="display:none;"></span>
 
-
-                <!-- 🛒 Cart Icon -->
-                <span id="cartIcon" style="margin-left:15px; cursor:pointer;">
+                <span id="cartIcon">
                     🛒 <span id="cartCount">0</span>
                 </span>
             </div>
 
         </div>
 
-        <h2>Our Products</h2>
+        <h2 class="mt-4 text-center">Our Products</h2>
 
         <div id="productSection" style="display:none;">
             <div id="productContainer" class="products"></div>
         </div>
+
     </div>
 
-
-    <!-- ================= SLIDE CART ================= -->
-
+    <!-- CART SIDEBAR -->
     <div id="cartSidebar" class="cart-sidebar">
         <div class="cart-header">
             <h4>My Cart</h4>
@@ -55,12 +69,19 @@
         </div>
 
         <div id="cartItems"></div>
-
         <h5 id="cartTotal"></h5>
+
+        <button id="checkoutBtn" onclick="goToCheckout()">Checkout</button>
     </div>
 
 
+
+    <!-- script Start  -->
+
+
     <script>
+
+        let allProducts = [];
 
         function goToRegister() {
             window.location.href = "registration.html";
@@ -72,71 +93,98 @@
             let username = sessionStorage.getItem("username");
 
             if (loginStatus === "true" && username) {
-
                 document.getElementById("registerBtn").style.display = "none";
-
                 let userArea = document.getElementById("userArea");
                 userArea.style.display = "inline";
                 userArea.innerHTML = username;
-
                 document.getElementById("productSection").style.display = "block";
-
                 fetchProducts();
-            } else {
-                document.getElementById("productSection").style.display = "none";
             }
 
             updateCartCount();
+
+            // 🔍 Search Event
+            document.getElementById("searchInput").addEventListener("keyup", function () {
+                searchProducts(this.value);
+            });
         };
 
-
-
-        // ================= FETCH PRODUCTS =================
-
         function fetchProducts() {
-
             fetch("https://fakestoreapi.com/products")
                 .then(res => res.json())
                 .then(data => {
-
-                    let container = document.getElementById("productContainer");
-                    container.innerHTML = "";
-
-                    data.slice(0, 18).forEach(product => {
-
-                        let card = document.createElement("div");
-                        card.className = "card p-3 m-2";
-                        card.style.width = "200px";
-                        card.style.display = "inline-block";
-
-                        card.innerHTML = `
-                    <img src="${product.image}" width="100"><br>
-                    <b>${product.title.substring(0, 20)}</b><br>
-                    ₹ ${Number(product.price)}<br><br>
-                `;
-
-                        let btn = document.createElement("button");
-                        btn.className = "btn btn-primary btn-sm";
-                        btn.innerText = "Add To Cart";
-
-                        btn.addEventListener("click", function () {
-                            addToCart(product);
-                        });
-
-                        card.appendChild(btn);
-                        container.appendChild(card);
-                    });
+                    allProducts = data.slice(0, 20);
+                    displayProducts(allProducts);
                 });
         }
 
+        function displayProducts(products) {
 
+            let container = document.getElementById("productContainer");
+            container.innerHTML = "";
 
-        // ================= ADD TO CART =================
+            products.forEach(product => {
 
+                let card = document.createElement("div");
+                card.className = "card product-card";
+
+                card.innerHTML = `
+            <img src="${product.image}" class="product-img" style="cursor:pointer;">
+            <h6>${product.title.substring(0, 25)}</h6>
+            <p class="price">₹ ${Number(product.price)}</p>
+            <button class="add-btn">Add To Cart</button>
+        `;
+
+                // 🔍 Go To Product Page
+                card.querySelector(".product-img").addEventListener("click", function () {
+                    window.location.href = "product.html?id=" + product.id;
+                });
+
+                // 🛒 ADD TO CART FIX
+                card.querySelector(".add-btn").addEventListener("click", function () {
+                    addToCart(product);
+                });
+
+                container.appendChild(card);
+            });
+        }
+        // 🔍 SEARCH FUNCTION
+        function searchProducts(keyword) {
+
+            let filtered = allProducts.filter(product =>
+                product.title.toLowerCase().includes(keyword.toLowerCase())
+            );
+
+            displayProducts(filtered);
+        }
+
+        // 🔽 SORT FUNCTION
+        function sortProducts() {
+
+            let value = document.getElementById("sortSelect").value;
+            let sorted = [...allProducts];
+
+            if (value === "low") {
+                sorted.sort((a, b) => a.price - b.price);
+
+            } else if (value === "high") {
+                sorted.sort((a, b) => b.price - a.price);
+
+            } else if (value === "az") {
+                sorted.sort((a, b) =>
+                    a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+                );
+
+            } else if (value === "za") {
+                sorted.sort((a, b) =>
+                    b.title.toLowerCase().localeCompare(a.title.toLowerCase())
+                );
+            }
+
+            displayProducts(sorted);
+        }
         function addToCart(product) {
-
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
             let existing = cart.find(item => item.id === product.id);
 
             if (existing) {
@@ -145,42 +193,24 @@
                 cart.push({
                     id: product.id,
                     title: product.title,
-                    price: Number(product.price),   // ✅ FIX
+                    price: Number(product.price),
                     image: product.image,
                     quantity: 1
                 });
             }
 
             localStorage.setItem("cart", JSON.stringify(cart));
-
             updateCartCount();
-            openCart();
         }
-
-
-
-        // ================= UPDATE COUNT =================
 
         function updateCartCount() {
-
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-            let totalQty = 0;
-
-            cart.forEach(item => {
-                totalQty += Number(item.quantity || 0);
-            });
-
-            document.getElementById("cartCount").innerText = totalQty;
+            let total = 0;
+            cart.forEach(item => total += item.quantity);
+            document.getElementById("cartCount").innerText = total;
         }
 
-
-
-        // ================= OPEN / CLOSE CART =================
-
-        document.getElementById("cartIcon").addEventListener("click", function () {
-            openCart();
-        });
+        document.getElementById("cartIcon").addEventListener("click", openCart);
 
         function openCart() {
             document.getElementById("cartSidebar").classList.add("active");
@@ -191,48 +221,29 @@
             document.getElementById("cartSidebar").classList.remove("active");
         }
 
-
-
-        // ================= DISPLAY CART =================
-
         function displayCart() {
-
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             let container = document.getElementById("cartItems");
-
             container.innerHTML = "";
-
             let total = 0;
-
-            if (cart.length === 0) {
-                container.innerHTML = "<p>Your cart is empty</p>";
-                document.getElementById("cartTotal").innerText = "";
-                return;
-            }
 
             cart.forEach((item, index) => {
 
-                let price = Number(item.price || 0);
-                let qty = Number(item.quantity || 1);
-
-                total += price * qty;
+                total += item.price * item.quantity;
 
                 let div = document.createElement("div");
                 div.className = "cart-item";
 
                 div.innerHTML = `
-            <img src="${item.image}" width="60"><br>
-            <b>${item.title.substring(0, 25)}</b><br>
-            ₹ ${price}<br><br>
-
-            <button onclick="decrease(${index})">-</button>
-            ${qty}
-            <button onclick="increase(${index})">+</button>
-
-            <br><br>
-            <button onclick="removeItem(${index})">Remove</button>
-            <hr>
-        `;
+                <img src="${item.image}">
+                <p>${item.title.substring(0, 25)}</p>
+                <p>₹ ${item.price}</p>
+                <button onclick="decrease(${index})">-</button>
+                ${item.quantity}
+                <button onclick="increase(${index})">+</button>
+                <br>
+                <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+                `;
 
                 container.appendChild(div);
             });
@@ -240,55 +251,48 @@
             document.getElementById("cartTotal").innerText = "Total: ₹ " + total.toFixed(2);
         }
 
-
-
-        // ================= PLUS =================
-
         function increase(index) {
-
             let cart = JSON.parse(localStorage.getItem("cart"));
-
-            cart[index].quantity = Number(cart[index].quantity) + 1;
-
+            cart[index].quantity++;
             localStorage.setItem("cart", JSON.stringify(cart));
-
             displayCart();
             updateCartCount();
         }
-
-
-
-        // ================= MINUS =================
 
         function decrease(index) {
-
             let cart = JSON.parse(localStorage.getItem("cart"));
-
             if (cart[index].quantity > 1) {
-                cart[index].quantity = Number(cart[index].quantity) - 1;
+                cart[index].quantity--;
             }
-
             localStorage.setItem("cart", JSON.stringify(cart));
-
             displayCart();
             updateCartCount();
         }
-
-
-
-        // ================= REMOVE =================
 
         function removeItem(index) {
-
             let cart = JSON.parse(localStorage.getItem("cart"));
-
             cart.splice(index, 1);
-
             localStorage.setItem("cart", JSON.stringify(cart));
-
             displayCart();
             updateCartCount();
         }
 
+        // checkout button 
+
+
+        function goToCheckout() {
+
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+
+            window.location.href = "checkout.html";
+        }
     </script>
+
 </body>
+
+</html>

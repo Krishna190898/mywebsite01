@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Product Details - Mr KKR</title>
+    <link rel="stylesheet" href="product.css">
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <div id="logo" onclick="goHome()">Mr KKR</div>
+
+        <div id="text">
+            <a href="index.html">Home</a>
+            <a href="#">What People Say</a>
+            <a href="#">How Q Works</a>
+            <a href="#">Insights</a>
+            <a href="#">FAQ</a>
+        </div>
+
+        <div class="search-sort">
+            <input type="text" placeholder="Search product...">
+            <select>
+                <option>Sort By</option>
+            </select>
+        </div>
+
+        <div id="btn">
+            <button id="registerBtn" onclick="goToRegister()">Register</button>
+            <span id="userArea" style="display:none;"></span>
+
+            <span id="cartIcon">
+                🛒 <span id="cartCount">0</span>
+            </span>
+        </div>
+
+    </div>
+
+    <!-- PRODUCT DETAILS SECTION -->
+    <div class="details-section">
+        <div id="productDetails"></div>
+    </div>
+
+    <script src="product.js"></script>
+</body>
+
+</html>
