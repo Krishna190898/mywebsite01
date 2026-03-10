@@ -3,12 +3,51 @@
 
 <head>
     <title>Checkout - Mr KKR Store</title>
+
+    <!-- same css as index -->
+    <link rel="stylesheet" href="index.css">
+
+    <!-- checkout css -->
     <link rel="stylesheet" href="checkout.css">
 </head>
 
 <body>
 
-    <div class="checkout-wrapper">
+    <!-- NAVBAR -->
+    <div class="navbar">
+
+        <div id="logo">Mr KKR</div>
+
+        <div id="text">
+            <a href="index.html">Home</a>
+            <a href="#">What People Say</a>
+            <a href="#">How Q Works</a>
+            <a href="#">Insights</a>
+            <a href="#">FAQ</a>
+        </div>
+
+        <div class="search-sort">
+            <input type="text" placeholder="Search product...">
+
+            <select>
+                <option>Sort By</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+            </select>
+        </div>
+
+        <div id="btn">
+            <button onclick="window.location.href='registration.html'">Register</button>
+
+            <span id="cartIcon">
+                🛒 <span id="cartCount">0</span>
+            </span>
+        </div>
+
+    </div>
+
+    <!-- CHECKOUT CONTENT -->
+    <div class="checkout-container">
 
         <div class="checkout-box" id="checkoutBox">
 
@@ -36,55 +75,57 @@
 
     </div>
 
-    <script>
+<script>
 
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        let container = document.getElementById("checkoutContainer");
-        let total = 0;
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let container = document.getElementById("checkoutContainer");
+let total = 0;
 
-        if (cart.length === 0) {
-            container.innerHTML = "<p class='empty'>Your cart is empty!</p>";
-        }
+if(cart.length === 0){
+    container.innerHTML = "<p class='empty'>Your cart is empty!</p>";
+}
 
-        cart.forEach(item => {
+cart.forEach(item => {
 
-            total += item.price * item.quantity;
+total += item.price * item.quantity;
 
-            container.innerHTML += `
-            <div class="checkout-item">
-                <img src="${item.image}">
-                <div class="item-info">
-                    <p class="title">${item.title.substring(0, 40)}</p>
-                    <p class="price">₹ ${item.price} × ${item.quantity}</p>
-                </div>
-            </div>
-        `;
-        });
+container.innerHTML += `
+<div class="checkout-item">
+<img src="${item.image}">
+<div class="item-info">
+<p class="title">${item.title.substring(0,40)}</p>
+<p class="price">₹ ${item.price} × ${item.quantity}</p>
+</div>
+</div>
+`;
 
-        document.getElementById("finalTotal").innerText =
-            "Grand Total: ₹ " + total.toFixed(2);
+});
 
-        function placeOrder(event) {
-            event.preventDefault();
+document.getElementById("finalTotal").innerText =
+"Grand Total: ₹ " + total.toFixed(2);
 
-            if (cart.length === 0) {
-                alert("Cart is empty!");
-                return;
-            }
+function placeOrder(event){
 
-            localStorage.removeItem("cart");
+event.preventDefault();
 
-            document.getElementById("checkoutBox").innerHTML = `
-                <div class="success-box">
-                    <h2>✅ Order Placed Successfully!</h2>
-                    <p>Your order has been confirmed 🎉</p>
-                    <a href="index.html" class="home-btn">Back to Home</a>
-                </div>
-            `;
-        }
+if(cart.length === 0){
+alert("Cart is empty!");
+return;
+}
 
-    </script>
+localStorage.removeItem("cart");
+
+document.getElementById("checkoutBox").innerHTML = `
+<div class="success-box">
+<h2>✅ Order Placed Successfully!</h2>
+<p>Your order has been confirmed 🎉</p>
+<a href="index.html" class="home-btn">Back to Home</a>
+</div>
+`;
+
+}
+
+</script>
 
 </body>
-
 </html>

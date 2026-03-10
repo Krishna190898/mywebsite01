@@ -15,6 +15,7 @@
     <div class="container-fluid p-0">
 
         <!-- NAVBAR -->
+
         <div class="navbar">
 
             <div id="logo">Mr KKR</div>
@@ -28,6 +29,7 @@
             </div>
 
             <!-- 🔍 SEARCH + SORT -->
+
             <div class="search-sort">
 
                 <input type="text" id="searchInput" placeholder="Search product...">
@@ -62,6 +64,7 @@
     </div>
 
     <!-- CART SIDEBAR -->
+
     <div id="cartSidebar" class="cart-sidebar">
         <div class="cart-header">
             <h4>My Cart</h4>
@@ -73,11 +76,9 @@
 
         <button id="checkoutBtn" onclick="goToCheckout()">Checkout</button>
     </div>
-
-
-
+    
+    
     <!-- script Start  -->
-
 
     <script>
 
@@ -136,11 +137,13 @@
         `;
 
                 // 🔍 Go To Product Page
+
                 card.querySelector(".product-img").addEventListener("click", function () {
                     window.location.href = "product.html?id=" + product.id;
                 });
 
                 // 🛒 ADD TO CART FIX
+
                 card.querySelector(".add-btn").addEventListener("click", function () {
                     addToCart(product);
                 });
@@ -148,7 +151,10 @@
                 container.appendChild(card);
             });
         }
+
+
         // 🔍 SEARCH FUNCTION
+
         function searchProducts(keyword) {
 
             let filtered = allProducts.filter(product =>
@@ -159,6 +165,7 @@
         }
 
         // 🔽 SORT FUNCTION
+
         function sortProducts() {
 
             let value = document.getElementById("sortSelect").value;
@@ -277,8 +284,8 @@
             updateCartCount();
         }
 
-        // checkout button 
 
+        // checkout button 
 
         function goToCheckout() {
 
